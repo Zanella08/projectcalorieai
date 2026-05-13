@@ -657,7 +657,303 @@
     .tt-skip:hover { color:var(--text-secondary); }
     .tt-next { padding:7px 16px; background:var(--accent); color:#fff; border:none; border-radius:100px; font-family:'Outfit',sans-serif; font-size:.78rem; font-weight:700; cursor:pointer; transition:.2s; }
     .tt-next:hover { background:var(--accent-light); }
+
+    /* ============================================================
+       AUTH MODAL
+    ============================================================ */
+    .auth-overlay {
+      position:fixed; inset:0; z-index:9000;
+      background:rgba(0,0,0,0.88); backdrop-filter:blur(14px);
+      display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .auth-overlay.auth-hidden { display:none; }
+    .auth-box {
+      background:var(--bg-card); border:1px solid var(--border-md);
+      border-radius:var(--r-xl); max-width:420px; width:100%;
+      overflow:hidden; animation:obIn .3s cubic-bezier(.4,0,.2,1);
+    }
+    .auth-header {
+      padding:28px 32px 0;
+    }
+    .auth-logo { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:600; color:var(--text-primary); margin-bottom:6px; }
+    .auth-logo span { color:var(--accent); }
+    .auth-tabs { display:flex; gap:0; margin-top:20px; border-bottom:1px solid var(--border); }
+    .auth-tab {
+      flex:1; padding:10px; text-align:center; font-size:.88rem; font-weight:600;
+      color:var(--text-muted); cursor:pointer; border-bottom:2px solid transparent;
+      transition:var(--ease); font-family:'Outfit',sans-serif; background:none; border-left:none; border-right:none; border-top:none;
+    }
+    .auth-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+    .auth-body { padding:24px 32px 28px; }
+    .auth-field { margin-bottom:16px; }
+    .auth-label { display:block; font-size:.75rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--text-secondary); margin-bottom:7px; }
+    .auth-input {
+      width:100%; padding:12px 14px; background:var(--bg-input);
+      border:1px solid var(--border); border-radius:var(--r-sm);
+      color:var(--text-primary); font-family:'Outfit',sans-serif; font-size:.95rem;
+      outline:none; transition:var(--ease);
+    }
+    .auth-input:focus { border-color:var(--accent-border); box-shadow:0 0 0 3px var(--accent-dim); }
+    .auth-input::placeholder { color:var(--text-muted); }
+    .auth-submit {
+      width:100%; padding:14px; background:var(--accent); color:#fff;
+      border:none; border-radius:var(--r-md); font-family:'Outfit',sans-serif;
+      font-weight:700; font-size:.95rem; cursor:pointer; transition:var(--ease);
+      margin-top:8px; display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .auth-submit:hover { background:var(--accent-light); }
+    .auth-submit:disabled { opacity:.5; cursor:not-allowed; }
+    .auth-error { color:var(--danger); font-size:.8rem; margin-top:8px; text-align:center; }
+    .auth-divider { text-align:center; color:var(--text-muted); font-size:.78rem; margin:16px 0; position:relative; }
+    .auth-divider::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border); }
+    .auth-divider span { background:var(--bg-card); padding:0 12px; position:relative; }
+    .auth-guest { width:100%; padding:11px; background:transparent; color:var(--text-secondary); border:1px solid var(--border); border-radius:var(--r-md); font-family:'Outfit',sans-serif; font-size:.88rem; cursor:pointer; transition:var(--ease); }
+    .auth-guest:hover { border-color:var(--border-md); color:var(--text-primary); }
+
+    /* ============================================================
+       AVATAR + PROFILE DRAWER
+    ============================================================ */
+    .nav-avatar {
+      width:36px; height:36px; border-radius:50%;
+      background:var(--accent); color:#fff;
+      font-family:'Outfit',sans-serif; font-size:.82rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; border:2px solid transparent; transition:var(--ease);
+      flex-shrink:0;
+    }
+    .nav-avatar:hover { border-color:var(--accent-light); transform:scale(1.05); }
+    .nav-signin {
+      padding:7px 18px; background:var(--accent); color:#fff;
+      border:none; border-radius:var(--r-full); font-family:'Outfit',sans-serif;
+      font-size:.82rem; font-weight:700; cursor:pointer; transition:var(--ease);
+    }
+    .nav-signin:hover { background:var(--accent-light); }
+
+    .drawer-overlay {
+      position:fixed; inset:0; z-index:8500;
+      background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
+    }
+    .drawer-overlay.drawer-hidden { display:none; }
+    .profile-drawer {
+      position:fixed; top:0; right:0; bottom:0; z-index:8501;
+      width:300px; max-width:85vw;
+      background:var(--bg-card); border-left:1px solid var(--border-md);
+      display:flex; flex-direction:column;
+      transform:translateX(100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+      box-shadow:-8px 0 32px rgba(0,0,0,.4);
+    }
+    .profile-drawer.open { transform:translateX(0); }
+    .drawer-top {
+      padding:24px 20px 20px;
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .drawer-close {
+      width:30px; height:30px; border-radius:50%;
+      background:var(--bg-secondary); border:1px solid var(--border);
+      color:var(--text-secondary); font-size:14px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; transition:var(--ease);
+    }
+    .drawer-close:hover { color:var(--text-primary); }
+    .drawer-avatar {
+      width:56px; height:56px; border-radius:50%;
+      background:var(--accent); color:#fff;
+      font-family:'Outfit',sans-serif; font-size:1.2rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 14px;
+    }
+    .drawer-body { padding:24px 20px; flex:1; display:flex; flex-direction:column; gap:12px; }
+    .drawer-name { font-size:1.05rem; font-weight:700; color:var(--text-primary); text-align:center; }
+    .drawer-email { font-size:.82rem; color:var(--text-muted); text-align:center; margin-top:-6px; }
+    .plan-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:4px 14px; border-radius:var(--r-full);
+      font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      margin:4px auto 0; align-self:center;
+    }
+    .plan-badge.free { background:var(--bg-secondary); color:var(--text-muted); border:1px solid var(--border); }
+    .plan-badge.pro  { background:var(--accent-dim); color:var(--accent-light); border:1px solid var(--accent-border); }
+    .drawer-divider { height:1px; background:var(--border); margin:4px 0; }
+    .drawer-usage { font-size:.8rem; color:var(--text-secondary); text-align:center; padding:8px 0; }
+    .drawer-upgrade {
+      width:100%; padding:11px; background:var(--accent); color:#fff;
+      border:none; border-radius:var(--r-md); font-family:'Outfit',sans-serif;
+      font-weight:700; font-size:.88rem; cursor:pointer; transition:var(--ease);
+    }
+    .drawer-upgrade:hover { background:var(--accent-light); }
+    .drawer-logout {
+      width:100%; padding:11px; background:transparent; color:var(--danger);
+      border:1px solid rgba(224,90,90,.25); border-radius:var(--r-md);
+      font-family:'Outfit',sans-serif; font-weight:600; font-size:.88rem;
+      cursor:pointer; transition:var(--ease); margin-top:auto;
+    }
+    .drawer-logout:hover { background:rgba(224,90,90,.08); }
+
+    /* ============================================================
+       PAYWALL MODAL
+    ============================================================ */
+    .paywall-overlay {
+      position:fixed; inset:0; z-index:9000;
+      background:rgba(0,0,0,0.88); backdrop-filter:blur(14px);
+      display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .paywall-overlay.paywall-hidden { display:none; }
+    .paywall-box {
+      background:var(--bg-card); border:1px solid var(--border-md);
+      border-radius:var(--r-xl); max-width:460px; width:100%;
+      overflow:hidden; animation:obIn .3s cubic-bezier(.4,0,.2,1);
+    }
+    .paywall-header {
+      padding:28px 28px 20px; text-align:center;
+      background:linear-gradient(135deg,rgba(45,125,210,.08),transparent);
+      border-bottom:1px solid var(--border);
+    }
+    .paywall-icon { font-size:2.8rem; margin-bottom:10px; }
+    .paywall-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:500; color:var(--text-primary); margin-bottom:6px; }
+    .paywall-sub { font-size:.88rem; color:var(--text-secondary); line-height:1.6; }
+    .paywall-body { padding:22px 28px; }
+    .paywall-features { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+    .paywall-features li { display:flex; align-items:center; gap:10px; font-size:.9rem; color:var(--text-secondary); }
+    .paywall-features li::before { content:'✓'; color:var(--success); font-weight:700; width:18px; flex-shrink:0; }
+    .plan-toggle { display:flex; background:var(--bg-secondary); border:1px solid var(--border); border-radius:var(--r-md); padding:3px; gap:3px; margin-bottom:16px; }
+    .plan-opt { flex:1; padding:9px; text-align:center; border-radius:10px; cursor:pointer; border:none; background:transparent; font-family:'Outfit',sans-serif; font-size:.85rem; font-weight:600; color:var(--text-muted); transition:var(--ease); }
+    .plan-opt.active { background:var(--accent); color:#fff; }
+    .price-display { text-align:center; margin-bottom:16px; }
+    .price-amount { font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:600; color:var(--text-primary); line-height:1; }
+    .price-period { font-size:.85rem; color:var(--text-secondary); margin-top:3px; }
+    .price-savings { display:inline-block; padding:2px 10px; background:var(--accent-dim); border:1px solid var(--accent-border); border-radius:var(--r-full); font-size:.72rem; font-weight:700; color:var(--accent); margin-top:4px; }
+    .paywall-cta {
+      width:100%; padding:15px; background:var(--accent); color:#fff;
+      border:none; border-radius:var(--r-md); font-family:'Outfit',sans-serif;
+      font-weight:700; font-size:.97rem; cursor:pointer; transition:var(--ease);
+      display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .paywall-cta:hover { background:var(--accent-light); transform:translateY(-1px); box-shadow:0 8px 24px rgba(45,125,210,.25); }
+    .paywall-dismiss { width:100%; padding:10px; background:transparent; color:var(--text-muted); border:none; font-family:'Outfit',sans-serif; font-size:.82rem; cursor:pointer; margin-top:8px; }
+    .paywall-dismiss:hover { color:var(--text-secondary); }
+
+    /* ============================================================
+       TOAST NOTIFICATION
+    ============================================================ */
+    .toast {
+      position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px);
+      background:var(--bg-card); border:1px solid var(--border-md);
+      border-radius:var(--r-full); padding:10px 22px;
+      font-size:.88rem; font-weight:500; color:var(--text-primary);
+      box-shadow:0 8px 30px rgba(0,0,0,.4); z-index:9999;
+      transition:transform .35s cubic-bezier(.4,0,.2,1), opacity .35s;
+      opacity:0; white-space:nowrap;
+    }
+    .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+    .toast.success { border-color:rgba(82,196,122,.35); color:var(--success); }
+    .toast.error   { border-color:rgba(224,90,90,.35);  color:var(--danger); }
+
+    /* ============================================================
+       HEADER IMPROVEMENTS
+    ============================================================ */
+    nav { padding:16px 0; }
+    #tools { padding:82px 0 0; }
+    .tool-tabs { margin:0 auto 36px; }
+    .nav-right { gap:14px; }
+
+    /* Pro indicator in tab */
+    .tab-pro-badge {
+      font-size:.58rem; font-weight:700; letter-spacing:.06em;
+      background:var(--accent-dim); color:var(--accent); border:1px solid var(--accent-border);
+      border-radius:4px; padding:1px 5px; text-transform:uppercase; margin-left:2px;
+    }
+    .free-count-badge {
+      font-size:.68rem; color:var(--text-muted);
+      background:var(--bg-secondary); border:1px solid var(--border);
+      border-radius:var(--r-full); padding:2px 8px; margin-bottom:14px;
+      display:inline-flex; align-items:center; gap:5px;
+    }
+    .free-count-badge.warn { color:var(--danger); border-color:rgba(224,90,90,.3); }
+
+    /* SVG icon sizing in tabs and buttons */
+    .tool-tab svg { width:16px; height:16px; flex-shrink:0; }
+    .tool-tab.active svg { stroke: #0A0A0B; }
+    .tool-tab svg { stroke: var(--text-muted); transition:var(--ease); }
+    .tool-tab:hover svg { stroke: var(--text-primary); }
+    .radio-lbl svg { flex-shrink:0; }
+    .radio-opt input:checked + .radio-lbl svg { stroke: var(--accent-light); }
+    .benefit-icon svg { stroke: var(--accent); width:22px; height:22px; }
+
+    /* ============================================================
+       PROFILE PANEL
+    ============================================================ */
+    .profile-panel-wrap { max-width:600px; margin:0 auto; padding-bottom:40px; }
+    .profile-not-logged {
+      text-align:center; padding:60px 20px;
+      display:flex; flex-direction:column; align-items:center; gap:14px;
+    }
+    .profile-empty-icon { margin-bottom:6px; }
+    .profile-empty-title { font-size:1.1rem; font-weight:700; color:var(--text-primary); }
+    .profile-empty-sub { font-size:.88rem; color:var(--text-muted); max-width:280px; line-height:1.65; }
+
+    .profile-hero {
+      display:flex; align-items:center; gap:18px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--r-xl); padding:24px; margin-bottom:16px;
+    }
+    .profile-avatar-lg {
+      width:64px; height:64px; border-radius:50%;
+      background:var(--accent); color:#fff;
+      font-family:'Outfit',sans-serif; font-size:1.5rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .profile-hero-name  { font-size:1.15rem; font-weight:700; color:var(--text-primary); margin-bottom:3px; }
+    .profile-hero-email { font-size:.82rem; color:var(--text-muted); margin-bottom:8px; }
+
+    .profile-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--r-xl); padding:22px; margin-bottom:14px;
+    }
+    .profile-card-title {
+      font-size:.7rem; font-weight:700; letter-spacing:.13em;
+      text-transform:uppercase; color:var(--accent); margin-bottom:16px;
+    }
+    .profile-stats-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px;
+    }
+    @media(max-width:480px) { .profile-stats-grid { grid-template-columns:repeat(2,1fr); } }
+    .profile-stat { text-align:center; background:var(--bg-secondary); border-radius:var(--r-sm); padding:12px 8px; }
+    .profile-stat-val { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:var(--accent); line-height:1; }
+    .profile-stat-lbl { font-size:.64rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em; margin-top:4px; }
+
+    .profile-macros-row { display:flex; gap:16px; flex-wrap:wrap; }
+    .profile-macro { display:flex; align-items:center; gap:6px; font-size:.85rem; color:var(--text-secondary); }
+    .pmac-dot { width:8px; height:8px; border-radius:50%; }
+    .pmac-dot.protein { background:var(--accent); }
+    .pmac-dot.carbs   { background:var(--info); }
+    .pmac-dot.fat     { background:#C47852; }
+    .pmac-lbl { color:var(--text-muted); font-size:.78rem; }
+
+    .profile-usage-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:8px 0; border-bottom:1px solid var(--border); font-size:.9rem; color:var(--text-secondary);
+    }
+    .profile-usage-row:last-of-type { border-bottom:none; }
+    .profile-usage-val { font-weight:600; color:var(--text-primary); }
+    .profile-upgrade-btn {
+      width:100%; padding:12px; margin-top:14px;
+      background:var(--accent); color:#fff;
+      border:none; border-radius:var(--r-md); font-family:'Outfit',sans-serif;
+      font-weight:700; font-size:.9rem; cursor:pointer; transition:var(--ease);
+    }
+    .profile-upgrade-btn:hover { background:var(--accent-light); }
+    .profile-logout-btn {
+      width:100%; padding:11px; background:transparent; color:var(--danger);
+      border:1px solid rgba(224,90,90,.25); border-radius:var(--r-md);
+      font-family:'Outfit',sans-serif; font-weight:600; font-size:.88rem; cursor:pointer; transition:var(--ease);
+    }
+    .profile-logout-btn:hover { background:rgba(224,90,90,.08); }
+    .profile-tdee-empty p { font-size:.88rem; color:var(--text-muted); }
   </style>
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Stripe JS -->
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -673,6 +969,10 @@
         <button class="pill-btn active" id="btn-en" onclick="setLang('en')">EN</button>
         <button class="pill-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
       </div>
+      <!-- Sign in button (shown when logged out) -->
+      <button class="nav-signin" id="nav-signin-btn" onclick="showAuthModal()" style="display:none"></button>
+      <!-- Avatar (shown when logged in) -->
+      <div class="nav-avatar" id="nav-avatar" onclick="openDrawer()" style="display:none" title="Profile">?</div>
     </div>
   </div>
 </nav>
@@ -688,13 +988,16 @@
   <div class="container">
     <div class="tool-tabs">
       <button class="tool-tab active" id="tab-tdee" onclick="switchTool('tdee')">
-        <span>📊</span><span data-i18n="tab_tdee">Daily Calories</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="10" y2="12"/><line x1="14" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="10" y2="16"/><line x1="14" y1="16" x2="16" y2="16"/></svg><span data-i18n="tab_tdee">Daily Calories</span>
       </button>
       <button class="tool-tab" id="tab-food" onclick="switchTool('food')">
-        <span>🍽️</span><span data-i18n="tab_food">Food Analyzer</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg><span data-i18n="tab_food">Food Analyzer</span>
       </button>
       <button class="tool-tab" id="tab-saved" onclick="switchTool('saved')">
-        <span>📁</span><span data-i18n="tab_saved">My Recipes</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span data-i18n="tab_saved">My Recipes</span>
+      </button>
+      <button class="tool-tab" id="tab-profile" onclick="switchTool('profile')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-i18n="tab_profile">Profile</span>
       </button>
     </div>
 
@@ -756,9 +1059,9 @@
           <div class="form-group">
             <label class="form-label" data-i18n="lbl_goal">Goal</label>
             <div class="radio-grid three">
-              <label class="radio-opt"><input type="radio" name="goal" value="lose" /><span class="radio-lbl radio-col"><span>🔥</span><span data-i18n="goal_lose">Lose</span></span></label>
-              <label class="radio-opt"><input type="radio" name="goal" value="maintain" checked /><span class="radio-lbl radio-col"><span>⚖️</span><span data-i18n="goal_maintain">Maintain</span></span></label>
-              <label class="radio-opt"><input type="radio" name="goal" value="gain" /><span class="radio-lbl radio-col"><span>💪</span><span data-i18n="goal_gain">Gain</span></span></label>
+              <label class="radio-opt"><input type="radio" name="goal" value="lose" /><span class="radio-lbl radio-col"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 0-5 5-5 10a5 5 0 0 0 10 0C17 7 12 2 12 2z"/><path d="M12 12c0 0-2 2-2 4a2 2 0 0 0 4 0c0-2-2-4-2-4z"/></svg><span data-i18n="goal_lose">Lose</span></span></label>
+              <label class="radio-opt"><input type="radio" name="goal" value="maintain" checked /><span class="radio-lbl radio-col"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 9l9-6 9 6"/><path d="M3 15l6-4"/><path d="M21 15l-6-4"/><path d="M3 15a6 6 0 0 0 6 4"/><path d="M21 15a6 6 0 0 1-6 4"/></svg><span data-i18n="goal_maintain">Maintain</span></span></label>
+              <label class="radio-opt"><input type="radio" name="goal" value="gain" /><span class="radio-lbl radio-col"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><path d="M6 4h12"/><circle cx="6" cy="4" r="1"/><circle cx="18" cy="4" r="1"/></svg><span data-i18n="goal_gain">Gain</span></span></label>
             </div>
           </div>
 
@@ -771,7 +1074,7 @@
         <!-- Results -->
         <div id="tdee-results">
           <div class="result-placeholder" id="tdee-placeholder">
-            <div class="placeholder-icon">📊</div>
+            <div class="placeholder-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.25"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
             <h3 style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600" data-i18n="placeholder_title">Results appear here</h3>
             <p class="placeholder-text" data-i18n="placeholder_sub">Fill in your details and click Calculate.</p>
           </div>
@@ -851,7 +1154,7 @@
         <!-- Food results -->
         <div id="food-results">
           <div class="food-results-placeholder" id="food-placeholder">
-            <div class="placeholder-icon">🍽️</div>
+            <div class="placeholder-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.25"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg></div>
             <h3 style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600" data-i18n="food_placeholder_title">Nutrition analysis here</h3>
             <p class="placeholder-text" data-i18n="food_placeholder_sub">Add your ingredients and click Analyze to see the full nutritional breakdown.</p>
           </div>
@@ -905,7 +1208,7 @@
 
             <!-- Save Recipe button -->
             <button class="btn-save-recipe" id="btn-save-recipe" onclick="saveCurrentRecipe()">
-              <span>📁</span><span data-i18n="btn_save_recipe">Save Recipe</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span data-i18n="btn_save_recipe">Save Recipe</span>
             </button>
 
             <!-- AI notes on food -->
@@ -938,7 +1241,7 @@
 
       <!-- Empty state (shown when no recipes saved) -->
       <div class="saved-empty" id="saved-empty">
-        <div class="saved-empty-icon">📁</div>
+        <div class="saved-empty-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.25"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
         <h3 class="saved-empty-title" data-i18n="saved_empty_title">No saved recipes yet</h3>
         <p class="saved-empty-sub" data-i18n="saved_empty_sub">Analyze a recipe in the Food Analyzer tab and save it here.</p>
         <button class="btn-primary" onclick="switchTool('food')" data-i18n="saved_go_analyze">Analyze a Recipe</button>
@@ -947,6 +1250,78 @@
       <!-- Recipe grid (shown when recipes exist) -->
       <div class="saved-grid hidden" id="saved-grid"></div>
     </div><!-- /panel-saved -->
+
+    <!-- ======================== TOOL: PROFILE -->
+    <div class="tool-panel" id="panel-profile">
+      <div class="profile-panel-wrap" id="profile-panel-content">
+        <!-- Shown when not logged in -->
+        <div class="profile-not-logged" id="profile-not-logged">
+          <div class="profile-empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.3"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3 class="profile-empty-title" data-i18n="profile_not_logged_title">No account yet</h3>
+          <p class="profile-empty-sub" data-i18n="profile_not_logged_sub">Create a free account to save your data across devices and unlock the full experience.</p>
+          <button class="btn-primary" onclick="showAuthModal()">
+            <span data-i18n="profile_create_account">Create Free Account</span>
+          </button>
+        </div>
+
+        <!-- Shown when logged in -->
+        <div class="profile-logged hidden" id="profile-logged">
+          <!-- Avatar + name -->
+          <div class="profile-hero">
+            <div class="profile-avatar-lg" id="profile-avatar-lg">?</div>
+            <div class="profile-hero-info">
+              <div class="profile-hero-name"  id="profile-hero-name">User</div>
+              <div class="profile-hero-email" id="profile-hero-email">user@email.com</div>
+              <div class="plan-badge free" id="profile-hero-badge">Free</div>
+            </div>
+          </div>
+
+          <!-- TDEE Summary card -->
+          <div class="profile-card" id="profile-tdee-card">
+            <div class="profile-card-title" data-i18n="profile_tdee_title">Your Nutrition Profile</div>
+            <div class="profile-tdee-empty hidden" id="profile-tdee-empty">
+              <p data-i18n="profile_tdee_empty">No data yet. Calculate your daily calories first.</p>
+              <button class="btn-sm btn-accent" onclick="switchTool('tdee')" style="margin-top:8px" data-i18n="profile_go_calc">Go to Calculator</button>
+            </div>
+            <div class="profile-tdee-data hidden" id="profile-tdee-data">
+              <div class="profile-stats-grid">
+                <div class="profile-stat"><div class="profile-stat-val" id="pstat-target">—</div><div class="profile-stat-lbl" data-i18n="lbl_target">Target</div></div>
+                <div class="profile-stat"><div class="profile-stat-val" id="pstat-bmr">—</div><div class="profile-stat-lbl" data-i18n="lbl_bmr">BMR</div></div>
+                <div class="profile-stat"><div class="profile-stat-val" id="pstat-tdee">—</div><div class="profile-stat-lbl" data-i18n="lbl_tdee">TDEE</div></div>
+                <div class="profile-stat"><div class="profile-stat-val" id="pstat-goal">—</div><div class="profile-stat-lbl" data-i18n="lbl_goal">Goal</div></div>
+              </div>
+              <div class="profile-macros-row">
+                <div class="profile-macro"><span class="pmac-dot protein"></span><span id="pstat-protein">—</span><span class="pmac-lbl" data-i18n="mac_protein">Protein</span></div>
+                <div class="profile-macro"><span class="pmac-dot carbs"></span><span id="pstat-carbs">—</span><span class="pmac-lbl" data-i18n="mac_carbs">Carbs</span></div>
+                <div class="profile-macro"><span class="pmac-dot fat"></span><span id="pstat-fat">—</span><span class="pmac-lbl" data-i18n="mac_fat">Fat</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Usage card -->
+          <div class="profile-card">
+            <div class="profile-card-title" data-i18n="profile_usage_title">Usage</div>
+            <div class="profile-usage-row">
+              <span data-i18n="profile_analyses_used">Food analyses used</span>
+              <span class="profile-usage-val" id="profile-analyses-val">—</span>
+            </div>
+            <div class="profile-usage-row">
+              <span data-i18n="profile_plan_label">Current plan</span>
+              <span class="profile-usage-val" id="profile-plan-val">Free</span>
+            </div>
+            <button class="profile-upgrade-btn hidden" id="profile-upgrade-btn" onclick="showPaywall('food')" data-i18n="paywall_cta">Upgrade to Pro</button>
+          </div>
+
+          <!-- Account card -->
+          <div class="profile-card">
+            <div class="profile-card-title" data-i18n="profile_account_title">Account</div>
+            <button class="profile-logout-btn" onclick="handleLogout()" data-i18n="drawer_logout_btn">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /panel-profile -->
 
   </div><!-- container -->
 
@@ -997,30 +1372,22 @@
 <!-- ====================================================== SCRIPTS -->
 <script>
 /* ============================================================
-   ⚙️  CONFIG — SET YOUR API KEY AND PROVIDER
-
-   provider: 'groq'      → FREE — console.groq.com (recommended)
-   provider: 'gemini'    → FREE tier — aistudio.google.com/app/apikey
-   provider: 'anthropic' → PAID — console.anthropic.com
-
-   GROQ SETUP (100% free, no credit card needed):
-   1. Go to console.groq.com
-   2. Sign up → API Keys → Create API Key
-   3. Paste the key below, keep provider as 'groq'
+   ⚙️  CONFIGURATION
 ============================================================ */
 const CONFIG = {
-  provider: 'groq',                    // 'groq' | 'gemini' | 'anthropic'
-  apiKey:   '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',  // used ONLY if no proxyUrl set (dev mode)
-
-  // ✅ RECOMMENDED FOR PRODUCTION: set your Cloudflare Worker URL here
-  // This hides your API key from users. See cloudflare-worker.js for setup.
-  // proxyUrl: 'https://calorieai.ramospietro08.workers.dev',
-
-  // Models auto-set per provider. Override if needed:
-  // groqModel:      'llama-3.3-70b-versatile'
-  // geminiModel:    'gemini-2.0-flash'
-  // anthropicModel: 'claude-sonnet-4-20250514'
+  // AI
+  provider: 'groq',
+  apiKey:   '', // leave empty when using proxyUrl
+  proxyUrl: 'YOUR_CLOUDFLARE_WORKER_URL', // e.g. https://calorieai.yourname.workers.dev
 };
+
+const SUPABASE_URL  = 'https://frcyjkvlbsjumprqqpgz.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZyY3lqa3ZsYnNqdW1wcnFxcGd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NDI4NTUsImV4cCI6MjA5NDAxODg1NX0.853Kl4hGJY7T7wKuWU1fXPBpk5AKsDdmcvjEY9lx2EQ';
+
+const STRIPE_PK       = 'pk_live_51TVdfhHDs807eP7MyTlZ44y1coWftBcIad9gdwfypMNrlsmePv7xBYPG0zhBSj5b0eGiZe9sllMW74RIJSI2LYGc00CYBYL62C';
+const PRICE_MONTHLY   = 'price_1TVeNsHDs807eP7MhoV37nUE';
+const PRICE_ANNUAL    = 'price_1TVePqHDs807eP7Mvk6CGJmN';
+const FREE_ANALYSES   = 3; // free Food Analyzer uses before paywall
 
 /* ============================================================
    TRANSLATIONS
@@ -1072,7 +1439,32 @@ const T = {
     t2d:'Gained 5kg lean muscle',
     t3:'"The AI tips actually felt personalized. It understood my sedentary lifestyle and suggested practical changes I could make immediately."',
     t3d:'Maintains goal weight',
+    tab_profile:'Profile',
+    profile_not_logged_title:'No account yet',
+    profile_not_logged_sub:'Create a free account to save your data and unlock the full experience.',
+    profile_create_account:'Create Free Account',
+    profile_tdee_title:'Your Nutrition Profile',
+    profile_tdee_empty:'No data yet. Calculate your daily calories first.',
+    profile_go_calc:'Go to Calculator',
+    profile_usage_title:'Usage',
+    profile_analyses_used:'Food analyses used',
+    profile_plan_label:'Current plan',
+    profile_account_title:'Account',
+    drawer_logout_btn:'Sign Out',
     footer_copy:'© 2025 CalorieAI. Science + AI.', footer_privacy:'Privacy', footer_terms:'Terms', footer_tools:'Tools',
+    tab_profile:'Profile',
+    profile_not_logged_title:'No account yet',
+    profile_not_logged_sub:'Create a free account to save your data and unlock the full experience.',
+    profile_create_account:'Create Free Account',
+    profile_tdee_title:'Your Nutrition Profile',
+    profile_tdee_empty:'No data yet. Calculate your daily calories first.',
+    profile_go_calc:'Go to Calculator',
+    profile_usage_title:'Usage',
+    profile_analyses_used:'Food analyses used',
+    profile_plan_label:'Current plan',
+    profile_account_title:'Account',
+    drawer_logout_btn:'Sign Out',
+    profile_upgrade_btn:'Upgrade to Pro ⚡',
     tab_saved:'My Recipes',
     saved_empty_title:'No saved recipes yet',
     saved_empty_sub:'Analyze a recipe in the Food Analyzer tab and save it here.',
@@ -1090,7 +1482,7 @@ const T = {
     limit_cta:'Upgrade for Unlimited',
     limit_dismiss:'OK, come back tomorrow',
     usage_label:'AI uses today',
-    badge_lose:'🔥 Lose Weight', badge_maintain:'⚖️ Maintain Weight', badge_gain:'💪 Gain Muscle',
+    badge_lose:'▼ Lose Weight', badge_maintain:'= Maintain Weight', badge_gain:'▲ Gain Muscle',
     desc_lose:'A ~500 kcal daily deficit for steady fat loss (~0.5 kg/week).',
     desc_maintain:'Calories to maintain your current weight at your activity level.',
     desc_gain:'A ~300 kcal daily surplus to support lean muscle growth.',
@@ -1099,7 +1491,7 @@ const T = {
     err_no_ing:'Add at least one ingredient.',
     err_api:'API key not set. Open index.html, paste your Groq key in CONFIG.apiKey and set provider to groq.',
     ing_ph_name:'e.g. Chicken breast', ing_ph_qty:'100',
-    units:['g','ml','oz','cup','tbsp','tsp','piece','slice','lb'],
+    units:['g','ml','kg','oz','lb','cup','tbsp','tsp','unit','piece','slice','handful','pinch'],
   },
   pt: {
     hero_badge:'Nutrição com IA e Ciência', hero_title:'Seu corpo merece um plano nutricional <em>mais inteligente</em>',
@@ -1147,7 +1539,32 @@ const T = {
     t2d:'Ganhou 5kg de massa magra',
     t3:'"As dicas da IA pareciam realmente personalizadas. Ela entendeu meu estilo de vida sedentário e sugeriu mudanças práticas para aplicar imediatamente."',
     t3d:'Mantém o peso ideal',
+    tab_profile:'Perfil',
+    profile_not_logged_title:'Nenhuma conta ainda',
+    profile_not_logged_sub:'Crie uma conta gratuita para salvar seus dados e desbloquear a experiência completa.',
+    profile_create_account:'Criar Conta Gratuita',
+    profile_tdee_title:'Seu Perfil Nutricional',
+    profile_tdee_empty:'Sem dados ainda. Calcule suas calorias diárias primeiro.',
+    profile_go_calc:'Ir para a Calculadora',
+    profile_usage_title:'Uso',
+    profile_analyses_used:'Análises de alimentos usadas',
+    profile_plan_label:'Plano atual',
+    profile_account_title:'Conta',
+    drawer_logout_btn:'Sair',
     footer_copy:'© 2025 CalorieAI. Ciência + IA.', footer_privacy:'Privacidade', footer_terms:'Termos', footer_tools:'Ferramentas',
+    tab_profile:'Perfil',
+    profile_not_logged_title:'Sem conta ainda',
+    profile_not_logged_sub:'Crie uma conta gratuita para salvar seus dados e desbloquear a experiência completa.',
+    profile_create_account:'Criar Conta Grátis',
+    profile_tdee_title:'Seu Perfil Nutricional',
+    profile_tdee_empty:'Sem dados ainda. Calcule suas calorias diárias primeiro.',
+    profile_go_calc:'Ir para Calculadora',
+    profile_usage_title:'Uso',
+    profile_analyses_used:'Análises de alimentos usadas',
+    profile_plan_label:'Plano atual',
+    profile_account_title:'Conta',
+    drawer_logout_btn:'Sair',
+    profile_upgrade_btn:'Fazer Upgrade para Pro ⚡',
     tab_saved:'Minhas Receitas',
     saved_empty_title:'Nenhuma receita salva ainda',
     saved_empty_sub:'Analise uma receita na aba Analisador e salve aqui.',
@@ -1165,7 +1582,7 @@ const T = {
     limit_cta:'Upgrade para Ilimitado',
     limit_dismiss:'OK, voltar amanhã',
     usage_label:'Usos de IA hoje',
-    badge_lose:'🔥 Perder Peso', badge_maintain:'⚖️ Manter Peso', badge_gain:'💪 Ganhar Músculo',
+    badge_lose:'▼ Perder Peso', badge_maintain:'= Manter Peso', badge_gain:'▲ Ganhar Músculo',
     desc_lose:'Um déficit de ~500 kcal/dia para perda de gordura sustentável (~0,5 kg/semana).',
     desc_maintain:'Calorias para manter seu peso atual no nível de atividade informado.',
     desc_gain:'Um superávit de ~300 kcal/dia para apoiar o ganho de massa magra.',
@@ -1174,7 +1591,7 @@ const T = {
     err_no_ing:'Adicione pelo menos um ingrediente.',
     err_api:'Chave de API não configurada. Abra index.html, cole sua chave Groq em CONFIG.apiKey e defina provider como groq.',
     ing_ph_name:'ex: Peito de frango', ing_ph_qty:'100',
-    units:['g','ml','oz','xíc.','colher sopa','colher chá','unidade','fatia','lb'],
+    units:['g','ml','kg','oz','lb','xíc.','col. sopa','col. chá','unidade','peça','fatia','punhado','pitada'],
   }
 };
 
@@ -1219,6 +1636,12 @@ function setLang(l) {
   // Update nav tagline
   const tagline = document.getElementById('nav-tagline');
   if (tagline) tagline.textContent = lang === 'pt' ? 'Nutrição Inteligente' : 'Smart Nutrition';
+  // Update signin button text
+  const signinBtn2 = document.getElementById('nav-signin-btn');
+  if (signinBtn2 && signinBtn2.style.display !== 'none') {
+    signinBtn2.textContent = lang === 'pt' ? 'Entrar' : 'Sign In';
+  }
+  updateAuthModalLang();
 
   // If language actually changed and AI results are already visible, re-run AI in new language
   if (prevLang !== l) {
@@ -1264,11 +1687,12 @@ function updateUnitLabel() {
    TOOL TABS
 ============================================================ */
 function switchTool(tool) {
-  ['tdee','food','saved'].forEach(id => {
+  ['tdee','food','saved','profile'].forEach(id => {
     document.getElementById('tab-'+id)?.classList.toggle('active', id===tool);
     document.getElementById('panel-'+id)?.classList.toggle('active', id===tool);
   });
-  if (tool === 'saved') renderSavedRecipes();
+  if (tool === 'saved')   renderSavedRecipes();
+  if (tool === 'profile') renderProfilePanel();
 }
 
 /* ============================================================
@@ -1395,6 +1819,16 @@ function runTDEE() {
     setTimeout(() => document.getElementById('tdee-output').scrollIntoView({behavior:'smooth', block:'start'}), 100);
   }
 
+  // Save TDEE profile to Supabase for AI personalization
+  if (currentUser && r) {
+    const actText2 = document.getElementById('activity').options[document.getElementById('activity').selectedIndex].text;
+    sb.from('profiles').update({ tdee_data: {
+      target: r.target, bmr: r.bmr, tdee: r.tdee,
+      goal, gender, activityLabel: actText2,
+      proteinG: r.proteinG, carbsG: r.carbsG, fatG: r.fatG,
+    }}).eq('id', currentUser.id).then(() => loadProfile(currentUser.id));
+  }
+
   // Trigger AI
   runTDEEAI();
 }
@@ -1404,19 +1838,13 @@ function runTDEE() {
 ============================================================ */
 async function runTDEEAI() {
   if (!lastTDEE) return;
-  if (!CONFIG.apiKey || CONFIG.apiKey.includes('YOUR_')) {
+  if (!CONFIG.proxyUrl || CONFIG.proxyUrl.includes('YOUR_')) {
     document.getElementById('tdee-ai-loading').classList.add('hidden');
     document.getElementById('tdee-ai-content').innerHTML =
       `<p style="color:var(--danger)">⚠️ ${t('err_api')}</p>`;
     document.getElementById('tdee-ai-content').classList.remove('hidden');
     return;
   }
-  // Check daily usage limit
-  if (!checkLimit()) {
-    document.getElementById('tdee-ai-loading').classList.add('hidden');
-    return;
-  }
-  incrementUsage();
 
   const d = lastTDEE;
   const stageKeys = ['ai_stage1','ai_stage2','ai_stage3'];
@@ -1429,7 +1857,14 @@ async function runTDEEAI() {
   const goalLabel = { lose:'fat loss / weight loss', maintain:'weight maintenance', gain:'muscle gain / bulking' }[d.goal];
   const langInstr = lang === 'pt' ? 'Respond entirely in Brazilian Portuguese (pt-BR).' : 'Respond in English.';
 
+  // Enrich prompt with stored profile if available
+  const storedProfile = userProfile?.tdee_data;
+  const profileHint = storedProfile
+    ? `Note: this user has previously set a goal of "${storedProfile.goal || goal}" with a target of ${storedProfile.target} kcal.`
+    : '';
+
   const prompt = `You are a warm, expert nutritionist. ${langInstr}
+${profileHint}
 User profile: ${d.age}yo ${d.gender}, ${Math.round(d.wKg)}kg, ${Math.round(d.hCm)}cm. Activity: ${actText}. Goal: ${goalLabel}.
 Calculated: BMR ${d.bmr} kcal, TDEE ${d.tdee} kcal, Daily target ${d.target} kcal (${d.pG}g protein / ${d.cG}g carbs / ${d.fG}g fat).
 
@@ -1498,7 +1933,7 @@ async function runFoodAnalysis() {
   if (ings.length === 0) {
     errEl.textContent = t('err_no_ing'); errEl.classList.remove('hidden'); return;
   }
-  if (!CONFIG.apiKey || CONFIG.apiKey.includes('YOUR_')) {
+  if (!CONFIG.proxyUrl || CONFIG.proxyUrl.includes('YOUR_')) {
     errEl.textContent = t('err_api'); errEl.classList.remove('hidden'); return;
   }
 
@@ -1529,9 +1964,16 @@ async function runFoodAnalysis() {
   const langInstr = lang==='pt' ? 'Respond in Brazilian Portuguese (pt-BR).' : 'Respond in English.';
   const ingList = ings.map(i => `- ${i.name}: ${i.qty} ${i.unit}`).join('\n');
 
-  const prompt = `You are a warm, expert nutritionist with deep knowledge of ingredients and cooking methods. ${langInstr}
+  // Build personalized user context from saved TDEE profile
+  const userNutCtx = userProfile?.tdee_data
+    ? (lang === 'pt'
+        ? `O usuario tem meta de ${userProfile.tdee_data.target} kcal/dia com objetivo de ${userProfile.tdee_data.goal === 'lose' ? 'perder peso' : userProfile.tdee_data.goal === 'gain' ? 'ganhar massa' : 'manter peso'}. Macros diarios: ${userProfile.tdee_data.proteinG}g proteina, ${userProfile.tdee_data.carbsG}g carb, ${userProfile.tdee_data.fatG}g gordura. Faca referencia a como essa receita se encaixa ou nao nessa meta do usuario.`
+        : `The user's daily target is ${userProfile.tdee_data.target} kcal with a goal of ${userProfile.tdee_data.goal === 'lose' ? 'fat loss' : userProfile.tdee_data.goal === 'gain' ? 'muscle gain' : 'maintenance'}. Daily macros: ${userProfile.tdee_data.proteinG}g protein, ${userProfile.tdee_data.carbsG}g carbs, ${userProfile.tdee_data.fatG}g fat. Comment on how this recipe fits (or doesn't) their daily goals.`)
+    : '';
 
-Analyze this recipe and return a JSON object. Be conversational and descriptive in the notes — explain HOW each major ingredient and cooking method impacts the nutrition, give estimated calorie ranges, and mention what changes if the user swaps or removes something.
+  const prompt = `You are a warm, expert nutritionist with deep knowledge of ingredients and cooking methods. ${langInstr}
+${userNutCtx}
+Analyze this recipe and return a JSON object. Be conversational and descriptive in the notes — explain HOW each major ingredient and cooking method impacts the nutrition, give estimated calorie ranges, and mention what changes if the user swaps or removes something. If the user has a profile, comment on whether this recipe fits their daily calorie target.
 
 Recipe: "${recipeName}"
 Ingredients:
@@ -1548,13 +1990,12 @@ Respond with ONLY a valid JSON object (no markdown, no code fences, no preamble)
 
 All number fields must be integers (rounded). Use standard nutritional databases for estimates.`;
 
-  // Check daily usage limit
-  if (!checkLimit()) {
-    clearInterval && clearInterval();
-    document.getElementById('food-ai-loading').classList.add('hidden');
-    return;
-  }
-  incrementUsage();
+  // Freemium guard — 3 free uses in localStorage, no login needed
+  if (!canRunFoodAnalysis()) return;
+  await incrementFoodAnalysisCount();
+  // Load profile if logged in
+  if (currentUser) await loadProfile(currentUser.id);
+  updateFreeCountBadge();
 
   try {
     const raw = await callAPI(prompt);
@@ -1669,27 +2110,17 @@ async function callAPI(prompt) {
 /* ── Groq (FREE — llama-3.3-70b-versatile) ─────────────────── */
 async function callGroq(prompt) {
   const model = CONFIG.groqModel || 'llama-3.3-70b-versatile';
-  const body = {
-    model,
-    max_tokens: 1000,
-    temperature: 0.7,
-    messages: [{ role: 'user', content: prompt }],
-  };
-
-  // Use Cloudflare Worker proxy if set (hides API key from users)
-  const useProxy = CONFIG.proxyUrl && CONFIG.proxyUrl.startsWith('https://');
-  const url = useProxy
+  const body = { model, max_tokens: 1000, temperature: 0.7, messages: [{ role: 'user', content: prompt }] };
+  // Always use Cloudflare Worker proxy (keeps API key safe)
+  const url = CONFIG.proxyUrl && !CONFIG.proxyUrl.includes('YOUR_')
     ? CONFIG.proxyUrl
     : 'https://api.groq.com/openai/v1/chat/completions';
-
   const headers = { 'Content-Type': 'application/json' };
-  if (!useProxy) headers['Authorization'] = `Bearer ${CONFIG.apiKey}`;
-
-  const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error?.message || `Groq API error ${res.status}`);
+  if (!CONFIG.proxyUrl || CONFIG.proxyUrl.includes('YOUR_')) {
+    headers['Authorization'] = `Bearer ${CONFIG.apiKey}`;
   }
+  const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
+  if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || `Groq error ${res.status}`); }
   const data = await res.json();
   return data.choices?.[0]?.message?.content || '';
 }
@@ -1819,152 +2250,13 @@ function closeLimitModal() {
   document.getElementById('limit-modal').classList.add('hidden');
 }
 
-/* ============================================================
-   SAVED RECIPES SYSTEM (localStorage)
-============================================================ */
-const RECIPES_KEY = 'calorieai_recipes';
+/* Recipes now stored in Supabase — see Supabase functions above */
 
-function getSavedRecipes() {
-  try {
-    return JSON.parse(localStorage.getItem(RECIPES_KEY) || '[]');
-  } catch { return []; }
-}
 
-function saveRecipes(recipes) {
-  localStorage.setItem(RECIPES_KEY, JSON.stringify(recipes));
-}
 
-function saveCurrentRecipe() {
-  if (!lastFoodData || !lastFoodResult) return;
+// renderSavedRecipes — async Supabase version above
 
-  const btn = document.getElementById('btn-save-recipe');
-  if (btn.classList.contains('saved-done')) return;
-
-  const recipes = getSavedRecipes();
-  const newRecipe = {
-    id:          Date.now().toString(),
-    name:        lastFoodData.recipeName || 'Recipe',
-    date:        new Date().toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US'),
-    totals:      lastFoodResult.totals,
-    ingredients: lastFoodResult.ingredients,
-  };
-
-  // Avoid exact duplicates (same name + same day)
-  const duplicate = recipes.find(r => r.name === newRecipe.name && r.date === newRecipe.date);
-  if (!duplicate) {
-    recipes.unshift(newRecipe); // newest first
-    saveRecipes(recipes);
-  }
-
-  // Visual feedback
-  btn.classList.add('saved-done');
-  const span = btn.querySelector('[data-i18n]');
-  if (span) span.innerHTML = t('btn_save_recipe_done');
-  setTimeout(() => {
-    btn.classList.remove('saved-done');
-    if (span) span.innerHTML = t('btn_save_recipe');
-  }, 2500);
-
-  // Refresh saved panel if it's active
-  if (document.getElementById('panel-saved').classList.contains('active')) {
-    renderSavedRecipes();
-  }
-}
-
-function deleteRecipe(id) {
-  const recipes = getSavedRecipes().filter(r => r.id !== id);
-  saveRecipes(recipes);
-  renderSavedRecipes();
-}
-
-function renderSavedRecipes() {
-  const recipes = getSavedRecipes();
-  const emptyEl = document.getElementById('saved-empty');
-  const gridEl  = document.getElementById('saved-grid');
-
-  updateUsageBadge();
-
-  if (recipes.length === 0) {
-    emptyEl.classList.remove('hidden');
-    gridEl.classList.add('hidden');
-    return;
-  }
-
-  emptyEl.classList.add('hidden');
-  gridEl.classList.remove('hidden');
-
-  gridEl.innerHTML = recipes.map(r => `
-    <div class="saved-card">
-      <div>
-        <div class="saved-card-name">${r.name}</div>
-        <div class="saved-card-date">${r.date}</div>
-      </div>
-      <div class="saved-card-macros">
-        <span class="saved-macro-pill">🔥 ${Math.round(r.totals.calories)} kcal</span>
-        <span class="saved-macro-pill">💪 ${Math.round(r.totals.protein)}g</span>
-        <span class="saved-macro-pill">🌾 ${Math.round(r.totals.carbs)}g</span>
-        <span class="saved-macro-pill">🥑 ${Math.round(r.totals.fat)}g</span>
-      </div>
-      <div class="saved-card-actions">
-        <button class="btn-view-saved" onclick="openRecipeDetail('${r.id}')"
-          data-i18n="saved_card_view">${t('saved_card_view')}</button>
-        <button class="btn-del-saved" onclick="deleteRecipe('${r.id}')"
-          data-i18n="saved_card_delete">${t('saved_card_delete')}</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function openRecipeDetail(id) {
-  const recipe = getSavedRecipes().find(r => r.id === id);
-  if (!recipe) return;
-
-  document.getElementById('detail-title').textContent = recipe.name;
-  document.getElementById('detail-date').textContent  = recipe.date;
-
-  const labels = {
-    cal:     t('nut_cal'), protein: t('nut_protein'),
-    carbs:   t('nut_carbs'), fat:   t('nut_fat'),
-  };
-
-  document.getElementById('detail-totals').innerHTML = `
-    <div class="detail-nut-box hl">
-      <div class="detail-nut-val accent">${Math.round(recipe.totals.calories)}</div>
-      <div class="detail-nut-unit">kcal</div>
-      <div class="detail-nut-lbl">${labels.cal}</div>
-    </div>
-    <div class="detail-nut-box">
-      <div class="detail-nut-val">${Math.round(recipe.totals.protein)}</div>
-      <div class="detail-nut-unit">g</div>
-      <div class="detail-nut-lbl">${labels.protein}</div>
-    </div>
-    <div class="detail-nut-box">
-      <div class="detail-nut-val">${Math.round(recipe.totals.carbs)}</div>
-      <div class="detail-nut-unit">g</div>
-      <div class="detail-nut-lbl">${labels.carbs}</div>
-    </div>
-    <div class="detail-nut-box">
-      <div class="detail-nut-val">${Math.round(recipe.totals.fat)}</div>
-      <div class="detail-nut-unit">g</div>
-      <div class="detail-nut-lbl">${labels.fat}</div>
-    </div>`;
-
-  document.getElementById('detail-ingredients').innerHTML =
-    (recipe.ingredients || []).map(ing => `
-      <div class="detail-ing-row">
-        <div>
-          <div class="detail-ing-name">${ing.name}</div>
-          <div class="detail-ing-macros">${ing.amount} · ${Math.round(ing.calories)} kcal</div>
-        </div>
-        <div class="detail-ing-macros">
-          P: ${Math.round(ing.protein)}g &nbsp;
-          C: ${Math.round(ing.carbs)}g &nbsp;
-          F: ${Math.round(ing.fat)}g
-        </div>
-      </div>`).join('');
-
-  document.getElementById('recipe-detail-overlay').classList.remove('hidden');
-}
+// openRecipeDetail — async Supabase version above
 
 function closeRecipeDetail(e) {
   if (!e || e.target === document.getElementById('recipe-detail-overlay')) {
@@ -1977,18 +2269,594 @@ function closeRecipeDetail(e) {
 ============================================================ */
 const _originalSwitchTool = switchTool;
 switchTool = function(tool) {
-  ['tdee','food','saved'].forEach(id => {
+  ['tdee','food','saved','profile'].forEach(id => {
     document.getElementById('tab-'+id)?.classList.toggle('active', id===tool);
     document.getElementById('panel-'+id)?.classList.toggle('active', id===tool);
   });
-  if (tool === 'saved') renderSavedRecipes();
+  if (tool === 'saved')   renderSavedRecipes();
+  if (tool === 'profile') renderProfilePanel();
 };
+
+
+/* ============================================================
+   SUPABASE + AUTH
+============================================================ */
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+let currentUser    = null;
+let userProfile    = null;
+let selectedPlan   = 'monthly';
+
+// ── Init: called on page load ──────────────────────────────
+async function initApp() {
+  // Handle Stripe redirect
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true' && params.get('session_id')) {
+    await verifyStripePayment(params.get('session_id'));
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+  if (params.get('canceled') === 'true') {
+    showToast(lang === 'pt' ? 'Pagamento cancelado.' : 'Payment canceled.', 'error');
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+
+  // Check existing session
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) {
+    await onUserLogin(session.user);
+  } else {
+    updateHeaderUI(null);
+  }
+
+  // Listen for auth changes
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user) {
+      await onUserLogin(session.user);
+    } else {
+      currentUser = null; userProfile = null;
+      updateHeaderUI(null);
+    }
+  });
+}
+
+async function onUserLogin(user) {
+  currentUser = user;
+  await loadProfile(user.id);
+  updateHeaderUI(user);
+  // Update saved recipes panel if active
+  if (document.getElementById('panel-saved')?.classList.contains('active')) {
+    renderSavedRecipes();
+  }
+}
+
+async function loadProfile(userId) {
+  const { data } = await sb.from('profiles').select('*').eq('id', userId).single();
+  userProfile = data;
+  return data;
+}
+
+// ── Auth Modal ─────────────────────────────────────────────
+let authTab = 'login';
+let authPending = null; // action to run after login
+
+function showAuthModal(pendingAction) {
+  authPending = pendingAction || null;
+  updateAuthModalLang();
+  document.getElementById('auth-overlay').classList.remove('auth-hidden');
+  setTimeout(() => document.getElementById('auth-email').focus(), 100);
+}
+function closeAuthModal() {
+  document.getElementById('auth-overlay').classList.add('auth-hidden');
+  document.getElementById('auth-error').classList.add('hidden');
+  document.getElementById('auth-email').value = '';
+  document.getElementById('auth-password').value = '';
+}
+
+function switchAuthTab(tab) {
+  authTab = tab;
+  document.getElementById('auth-tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('auth-tab-signup').classList.toggle('active', tab === 'signup');
+  document.getElementById('auth-error').classList.add('hidden');
+  updateAuthModalLang();
+}
+
+function updateAuthModalLang() {
+  const ispt = lang === 'pt';
+  document.getElementById('auth-tab-login').textContent  = ispt ? 'Entrar' : 'Sign In';
+  document.getElementById('auth-tab-signup').textContent = ispt ? 'Criar Conta' : 'Create Account';
+  document.getElementById('auth-email-lbl').textContent  = 'Email';
+  document.getElementById('auth-pass-lbl').textContent   = ispt ? 'Senha' : 'Password';
+  document.getElementById('auth-submit-label').textContent = authTab === 'login'
+    ? (ispt ? 'Entrar' : 'Sign In')
+    : (ispt ? 'Criar Conta' : 'Create Account');
+  document.getElementById('auth-or-label').textContent    = ispt ? 'ou' : 'or';
+  document.getElementById('auth-guest-label').textContent = ispt
+    ? 'Continuar só com a calculadora (grátis)'
+    : 'Continue with TDEE only (free)';
+  document.getElementById('auth-email').placeholder = 'email@exemplo.com';
+  document.getElementById('auth-password').placeholder = ispt ? '••••••••' : '••••••••';
+}
+
+async function handleAuthSubmit() {
+  const email    = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const errEl    = document.getElementById('auth-error');
+  const btn      = document.getElementById('auth-submit-btn');
+
+  if (!email || !password) {
+    errEl.textContent = lang === 'pt' ? 'Preencha todos os campos.' : 'Please fill in all fields.';
+    errEl.classList.remove('hidden'); return;
+  }
+  if (password.length < 6) {
+    errEl.textContent = lang === 'pt' ? 'Senha deve ter pelo menos 6 caracteres.' : 'Password must be at least 6 characters.';
+    errEl.classList.remove('hidden'); return;
+  }
+
+  btn.disabled = true;
+  errEl.classList.add('hidden');
+
+  let result;
+  if (authTab === 'login') {
+    result = await sb.auth.signInWithPassword({ email, password });
+  } else {
+    result = await sb.auth.signUp({
+      email, password,
+      options: { emailRedirectTo: window.location.origin + window.location.pathname }
+    });
+    // Show success message for signup (email verification)
+    if (!result.error) {
+      closeAuthModal();
+      showToast(lang==='pt'
+        ? 'Conta criada! Verifique seu e-mail para confirmar. 📧'
+        : 'Account created! Check your email to confirm. 📧', 'success');
+      if (authPending) { authPending(); authPending = null; }
+      return;
+    }
+  }
+
+  btn.disabled = false;
+
+  if (result.error) {
+    errEl.textContent = result.error.message;
+    errEl.classList.remove('hidden'); return;
+  }
+
+  closeAuthModal();
+  showToast(authTab === 'login'
+    ? (lang === 'pt' ? 'Bem-vindo de volta! 👋' : 'Welcome back! 👋')
+    : (lang === 'pt' ? 'Conta criada! Bem-vindo 🎉' : 'Account created! Welcome 🎉'),
+    'success');
+
+  if (authPending) { authPending(); authPending = null; }
+}
+
+async function handleLogout() {
+  await sb.auth.signOut();
+  closeDrawer();
+  showToast(lang === 'pt' ? 'Saiu com sucesso.' : 'Signed out successfully.');
+}
+
+// ── Header UI Update ───────────────────────────────────────
+function updateHeaderUI(user) {
+  const avatar   = document.getElementById('nav-avatar');
+  const signinBtn= document.getElementById('nav-signin-btn');
+
+  if (user) {
+    const initials = getInitials(userProfile?.full_name || user.email);
+    avatar.textContent = initials;
+    avatar.style.display = 'flex';
+    signinBtn.style.display = 'none';
+  } else {
+    avatar.style.display = 'none';
+    signinBtn.style.display = 'flex';
+    signinBtn.textContent = lang === 'pt' ? 'Entrar' : 'Sign In';
+  }
+}
+
+function getInitials(nameOrEmail) {
+  if (!nameOrEmail) return '?';
+  const parts = nameOrEmail.split(/[\s@]/);
+  if (parts.length >= 2 && parts[1]) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return nameOrEmail[0].toUpperCase();
+}
+
+// ── Profile Drawer ─────────────────────────────────────────
+function openDrawer() {
+  if (!currentUser) { showAuthModal(); return; }
+  const ispt = lang === 'pt';
+  const name  = userProfile?.full_name || currentUser.email.split('@')[0];
+  const email = currentUser.email;
+  const plan  = userProfile?.plan || 'free';
+  const used  = userProfile?.free_analyses_used || 0;
+
+  const initials = getInitials(name);
+  document.getElementById('drawer-avatar').textContent = initials;
+  document.getElementById('drawer-name').textContent   = name;
+  document.getElementById('drawer-email').textContent  = email;
+
+  const badge = document.getElementById('drawer-plan-badge');
+  badge.textContent = plan === 'pro' ? 'Pro ⚡' : (ispt ? 'Grátis' : 'Free');
+  badge.className   = 'plan-badge ' + plan;
+
+  const upgradeBtn = document.getElementById('drawer-upgrade-btn');
+  upgradeBtn.classList.toggle('hidden', plan === 'pro');
+  upgradeBtn.textContent = ispt ? '⚡ Upgrade para Pro' : '⚡ Upgrade to Pro';
+
+  if (plan === 'free') {
+    document.getElementById('drawer-usage').textContent =
+      ispt ? `${used}/${FREE_ANALYSES} análises gratuitas usadas` : `${used}/${FREE_ANALYSES} free analyses used`;
+  } else {
+    document.getElementById('drawer-usage').textContent =
+      ispt ? '✓ Análises ilimitadas' : '✓ Unlimited analyses';
+  }
+
+  document.getElementById('drawer-logout-btn').textContent = ispt ? 'Sair' : 'Sign Out';
+
+  document.getElementById('drawer-overlay').classList.remove('drawer-hidden');
+  setTimeout(() => document.getElementById('profile-drawer').classList.add('open'), 10);
+}
+
+function closeDrawer() {
+  document.getElementById('profile-drawer').classList.remove('open');
+  setTimeout(() => document.getElementById('drawer-overlay').classList.add('drawer-hidden'), 310);
+}
+
+// ── Paywall Modal ──────────────────────────────────────────
+function showPaywall(reason) {
+  const ispt = lang === 'pt';
+  selectedPlan = 'monthly';
+  setPlanType('monthly');
+
+  document.getElementById('pw-title').textContent = ispt ? 'Desbloqueie o Pro' : 'Unlock Pro';
+  document.getElementById('pw-sub').textContent = reason === 'save'
+    ? (ispt ? 'Salvar receitas é exclusivo do plano Pro.' : 'Saving recipes is a Pro plan feature.')
+    : (ispt ? 'Você usou suas 3 análises gratuitas. Faça upgrade para continuar.' : 'You used your 3 free analyses. Upgrade to continue.');
+
+  document.getElementById('pw-f1').textContent = ispt ? 'Análises de alimentos ilimitadas' : 'Unlimited food analyses';
+  document.getElementById('pw-f2').textContent = ispt ? 'Salvar receitas ilimitadas'       : 'Save unlimited recipes';
+  document.getElementById('pw-f3').textContent = ispt ? 'IA personalizada ao seu perfil'   : 'AI personalized to your profile';
+  document.getElementById('pw-f4').textContent = ispt ? 'Respostas prioritárias da IA'     : 'Priority AI responses';
+  document.getElementById('pw-monthly-btn').textContent = ispt ? 'Mensal'  : 'Monthly';
+  document.getElementById('pw-annual-btn').textContent  = ispt ? 'Anual'   : 'Annual';
+  document.getElementById('pw-dismiss-btn').textContent = ispt ? 'Agora não' : 'Maybe later';
+
+  document.getElementById('paywall-overlay').classList.remove('paywall-hidden');
+}
+function closePaywall() {
+  document.getElementById('paywall-overlay').classList.add('paywall-hidden');
+}
+
+function setPlanType(type) {
+  selectedPlan = type;
+  const ispt = lang === 'pt';
+  document.getElementById('pw-monthly-btn').classList.toggle('active', type === 'monthly');
+  document.getElementById('pw-annual-btn').classList.toggle('active', type === 'annual');
+
+  if (type === 'monthly') {
+    document.getElementById('pw-price').textContent  = 'R$14,90';
+    document.getElementById('pw-period').textContent = ispt ? 'por mês' : 'per month';
+    document.getElementById('pw-savings').classList.add('hidden');
+  } else {
+    document.getElementById('pw-price').textContent  = 'R$134,90';
+    document.getElementById('pw-period').textContent = ispt ? 'por ano (R$11,24/mês)' : 'per year (R$11.24/mo)';
+    document.getElementById('pw-savings').textContent = ispt ? 'Economize 25%' : 'Save 25%';
+    document.getElementById('pw-savings').classList.remove('hidden');
+  }
+  document.getElementById('pw-cta-label').textContent = ispt ? 'Assinar Agora →' : 'Subscribe Now →';
+}
+
+async function handleSubscribe() {
+  if (!currentUser) { closePaywall(); showAuthModal(() => showPaywall('food')); return; }
+  const btn = document.getElementById('pw-cta-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span>' + (lang === 'pt' ? 'Redirecionando…' : 'Redirecting…') + '</span>';
+
+  try {
+    const priceId = selectedPlan === 'annual' ? PRICE_ANNUAL : PRICE_MONTHLY;
+    const res = await fetch(CONFIG.proxyUrl + '/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        priceId,
+        userId:     currentUser.id,
+        email:      currentUser.email,
+        successUrl: window.location.origin + window.location.pathname,
+        cancelUrl:  window.location.origin + window.location.pathname,
+      })
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error(data.error || 'Failed to create checkout');
+    }
+  } catch(e) {
+    showToast(e.message, 'error');
+    btn.disabled = false;
+    document.getElementById('pw-cta-label').textContent = lang === 'pt' ? 'Assinar Agora →' : 'Subscribe Now →';
+  }
+}
+
+async function verifyStripePayment(sessionId) {
+  try {
+    const res = await fetch(CONFIG.proxyUrl + '/verify-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, userId: currentUser?.id })
+    });
+    const data = await res.json();
+    if (data.success) {
+      await loadProfile(currentUser.id);
+      updateHeaderUI(currentUser);
+      showToast(lang === 'pt' ? '🎉 Bem-vindo ao Pro!' : '🎉 Welcome to Pro!', 'success');
+    }
+  } catch(e) { console.error('Verify payment error:', e); }
+}
+
+// ── Toast ──────────────────────────────────────────────────
+function showToast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+// ── Freemium Guard ─────────────────────────────────────────
+const FREE_KEY = 'calorieai_free_uses';
+
+function isPro() { return userProfile?.plan === 'pro'; }
+
+// Guest uses — tracked in localStorage, no login needed
+function getGuestUses() {
+  try { return parseInt(JSON.parse(localStorage.getItem(FREE_KEY) || '{"c":0}').c) || 0; }
+  catch { return 0; }
+}
+function incrementGuestUses() {
+  const c = getGuestUses() + 1;
+  localStorage.setItem(FREE_KEY, JSON.stringify({ c }));
+}
+
+function canRunFoodAnalysis() {
+  // Pro users — always allowed
+  if (currentUser && isPro()) return true;
+
+  // Check guest/free uses
+  const used = getGuestUses();
+
+  // Still has free uses — allow (no login needed)
+  if (used < FREE_ANALYSES) return true;
+
+  // Used up free analyses
+  if (!currentUser) {
+    // Not logged in → ask to login, then paywall
+    showAuthModal(() => {
+      setTimeout(() => { if (!isPro()) showPaywall('food'); }, 400);
+    });
+    return false;
+  }
+
+  // Logged in but free plan → paywall
+  showPaywall('food');
+  return false;
+}
+
+function canSaveRecipe() {
+  if (!currentUser) { showAuthModal(() => {}); return false; }
+  if (!isPro()) { showPaywall('save'); return false; }
+  return true;
+}
+
+async function incrementFoodAnalysisCount() {
+  if (currentUser && isPro()) return;
+  incrementGuestUses();
+  // Also sync to Supabase if logged in
+  if (currentUser && userProfile) {
+    const used = (userProfile.free_analyses_used || 0) + 1;
+    await sb.from('profiles').update({ free_analyses_used: used }).eq('id', currentUser.id);
+    userProfile.free_analyses_used = used;
+  }
+  updateFreeCountBadge();
+}
+
+function updateFreeCountBadge() {
+  const wrap = document.getElementById('usage-badge-wrap');
+  if (!wrap) return;
+  if (currentUser && isPro()) { wrap.innerHTML = ''; return; }
+  const used = getGuestUses();
+  const remaining = Math.max(0, FREE_ANALYSES - used);
+  const warn = remaining <= 1;
+  wrap.innerHTML = `<div class="free-count-badge${warn?' warn':''}">
+    ${lang==='pt' ? `${remaining} análise(s) grátis restante(s)` : `${remaining} free ${remaining===1?'analysis':'analyses'} remaining`}
+  </div>`;
+}
+
+/* ============================================================
+   SUPABASE RECIPE FUNCTIONS (replaces localStorage)
+============================================================ */
+async function saveCurrentRecipe() {
+  if (!canSaveRecipe()) return;
+  if (!lastFoodData || !lastFoodResult) return;
+
+  const btn = document.getElementById('btn-save-recipe');
+  if (btn?.classList.contains('saved-done')) return;
+
+  const { error } = await sb.from('recipes').insert({
+    user_id:     currentUser.id,
+    name:        lastFoodData.recipeName || 'Recipe',
+    date:        new Date().toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US'),
+    totals:      lastFoodResult.totals,
+    ingredients: lastFoodResult.ingredients,
+    notes:       lastFoodResult.notes || '',
+  });
+
+  if (error) { showToast(error.message, 'error'); return; }
+
+  if (btn) {
+    btn.classList.add('saved-done');
+    const span = btn.querySelector('[data-i18n]');
+    if (span) span.innerHTML = t('btn_save_recipe_done');
+    setTimeout(() => {
+      btn.classList.remove('saved-done');
+      if (span) span.innerHTML = t('btn_save_recipe');
+    }, 2500);
+  }
+  showToast(lang === 'pt' ? 'Receita salva! 📁' : 'Recipe saved! 📁', 'success');
+}
+
+async function loadSavedRecipes() {
+  if (!currentUser) return [];
+  const { data, error } = await sb.from('recipes')
+    .select('*').eq('user_id', currentUser.id)
+    .order('created_at', { ascending: false });
+  return error ? [] : (data || []);
+}
+
+async function deleteRecipe(id) {
+  await sb.from('recipes').delete().eq('id', id).eq('user_id', currentUser.id);
+  renderSavedRecipes();
+}
+
+async function renderSavedRecipes() {
+  const emptyEl = document.getElementById('saved-empty');
+  const gridEl  = document.getElementById('saved-grid');
+  updateFreeCountBadge();
+
+  if (!currentUser) {
+    emptyEl.classList.remove('hidden'); gridEl.classList.add('hidden');
+    emptyEl.querySelector('.saved-empty-title').textContent = lang==='pt' ? 'Faça login para ver suas receitas' : 'Sign in to see your recipes';
+    emptyEl.querySelector('.saved-empty-sub').textContent   = lang==='pt' ? 'Crie uma conta gratuita para salvar e acessar suas receitas.' : 'Create a free account to save and access your recipes.';
+    return;
+  }
+
+  const recipes = await loadSavedRecipes();
+  if (recipes.length === 0) {
+    emptyEl.classList.remove('hidden'); gridEl.classList.add('hidden');
+    emptyEl.querySelector('.saved-empty-title').textContent = t('saved_empty_title');
+    emptyEl.querySelector('.saved-empty-sub').textContent   = t('saved_empty_sub');
+    return;
+  }
+
+  emptyEl.classList.add('hidden'); gridEl.classList.remove('hidden');
+  gridEl.innerHTML = recipes.map(r => `
+    <div class="saved-card">
+      <div>
+        <div class="saved-card-name">${r.name}</div>
+        <div class="saved-card-date">${r.date}</div>
+      </div>
+      <div class="saved-card-macros">
+        <span class="saved-macro-pill">🔥 ${Math.round(r.totals?.calories||0)} kcal</span>
+        <span class="saved-macro-pill">💪 ${Math.round(r.totals?.protein||0)}g</span>
+        <span class="saved-macro-pill">🌾 ${Math.round(r.totals?.carbs||0)}g</span>
+        <span class="saved-macro-pill">🥑 ${Math.round(r.totals?.fat||0)}g</span>
+      </div>
+      <div class="saved-card-actions">
+        <button class="btn-view-saved" onclick="openRecipeDetail('${r.id}')" data-i18n="saved_card_view">${t('saved_card_view')}</button>
+        <button class="btn-del-saved"  onclick="deleteRecipe('${r.id}')">${t('saved_card_delete')}</button>
+      </div>
+    </div>`).join('');
+}
+
+async function openRecipeDetail(id) {
+  const recipes = await loadSavedRecipes();
+  const recipe  = recipes.find(r => r.id === id);
+  if (!recipe) return;
+
+  document.getElementById('detail-title').textContent = recipe.name;
+  document.getElementById('detail-date').textContent  = recipe.date;
+
+  document.getElementById('detail-totals').innerHTML = `
+    <div class="detail-nut-box hl"><div class="detail-nut-val accent">${Math.round(recipe.totals?.calories||0)}</div><div class="detail-nut-unit">kcal</div><div class="detail-nut-lbl">${t('nut_cal')}</div></div>
+    <div class="detail-nut-box"><div class="detail-nut-val">${Math.round(recipe.totals?.protein||0)}</div><div class="detail-nut-unit">g</div><div class="detail-nut-lbl">${t('nut_protein')}</div></div>
+    <div class="detail-nut-box"><div class="detail-nut-val">${Math.round(recipe.totals?.carbs||0)}</div><div class="detail-nut-unit">g</div><div class="detail-nut-lbl">${t('nut_carbs')}</div></div>
+    <div class="detail-nut-box"><div class="detail-nut-val">${Math.round(recipe.totals?.fat||0)}</div><div class="detail-nut-unit">g</div><div class="detail-nut-lbl">${t('nut_fat')}</div></div>`;
+
+  document.getElementById('detail-ingredients').innerHTML =
+    (recipe.ingredients || []).map(ing => `
+      <div class="detail-ing-row">
+        <div><div class="detail-ing-name">${ing.name}</div><div class="detail-ing-macros">${ing.amount} · ${Math.round(ing.calories||0)} kcal</div></div>
+        <div class="detail-ing-macros">P:${Math.round(ing.protein||0)}g C:${Math.round(ing.carbs||0)}g F:${Math.round(ing.fat||0)}g</div>
+      </div>`).join('');
+
+  document.getElementById('recipe-detail-overlay').classList.remove('hidden');
+}
+
+
+/* ============================================================
+   PROFILE PANEL RENDERER
+============================================================ */
+function renderProfilePanel() {
+  const ispt = lang === 'pt';
+
+  if (!currentUser) {
+    document.getElementById('profile-not-logged')?.classList.remove('hidden');
+    document.getElementById('profile-logged')?.classList.add('hidden');
+    return;
+  }
+
+  document.getElementById('profile-not-logged')?.classList.add('hidden');
+  document.getElementById('profile-logged')?.classList.remove('hidden');
+
+  // Avatar + info
+  const name  = userProfile?.full_name || currentUser.email.split('@')[0];
+  const email = currentUser.email;
+  const plan  = userProfile?.plan || 'free';
+  const initials = getInitials(name);
+
+  const avEl = document.getElementById('profile-avatar-lg');
+  if (avEl) avEl.textContent = initials;
+  const nameEl = document.getElementById('profile-hero-name');
+  if (nameEl) nameEl.textContent = name;
+  const emailEl = document.getElementById('profile-hero-email');
+  if (emailEl) emailEl.textContent = email;
+  const badgeEl = document.getElementById('profile-hero-badge');
+  if (badgeEl) {
+    badgeEl.textContent = plan === 'pro' ? 'Pro ⚡' : (ispt ? 'Grátis' : 'Free');
+    badgeEl.className   = 'plan-badge ' + plan;
+  }
+
+  // TDEE data
+  const tdee = userProfile?.tdee_data;
+  const emptyEl = document.getElementById('profile-tdee-empty');
+  const dataEl  = document.getElementById('profile-tdee-data');
+  if (tdee) {
+    emptyEl?.classList.add('hidden');
+    dataEl?.classList.remove('hidden');
+    const goalLabel = {
+      lose:     ispt ? 'Perder Peso' : 'Lose Weight',
+      maintain: ispt ? 'Manter'      : 'Maintain',
+      gain:     ispt ? 'Ganhar Massa': 'Gain Muscle',
+    }[tdee.goal] || '—';
+    const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+    set('pstat-target',  (tdee.target||'—') + ' kcal');
+    set('pstat-bmr',     (tdee.bmr||'—')    + ' kcal');
+    set('pstat-tdee',    (tdee.tdee||'—')   + ' kcal');
+    set('pstat-goal',    goalLabel);
+    set('pstat-protein', (tdee.proteinG||'—') + 'g');
+    set('pstat-carbs',   (tdee.carbsG||'—')   + 'g');
+    set('pstat-fat',     (tdee.fatG||'—')     + 'g');
+  } else {
+    emptyEl?.classList.remove('hidden');
+    dataEl?.classList.add('hidden');
+  }
+
+  // Usage
+  const used = userProfile?.free_analyses_used || getGuestUses();
+  const usedEl = document.getElementById('profile-analyses-val');
+  if (usedEl) usedEl.textContent = isPro()
+    ? (ispt ? 'Ilimitado ✓' : 'Unlimited ✓')
+    : `${used} / ${FREE_ANALYSES}`;
+
+  const planValEl = document.getElementById('profile-plan-val');
+  if (planValEl) planValEl.textContent = plan === 'pro' ? 'Pro ⚡' : (ispt ? 'Grátis' : 'Free');
+
+  const upgradeBtn = document.getElementById('profile-upgrade-btn');
+  if (upgradeBtn) upgradeBtn.classList.toggle('hidden', plan === 'pro');
+}
 
 /* ============================================================
    INIT
 ============================================================ */
 setLang('en');
-updateUsageBadge(); // show usage counter on load
 
 // Pre-populate 3 default ingredient rows for UX
 addIngredient('', '', 'g');
@@ -1999,6 +2867,27 @@ addIngredient('', '', 'g');
 setTimeout(() => {
   document.querySelectorAll('.anim:not(.in)').forEach(el => obs.observe(el));
 }, 400);
+
+// Init Supabase auth and handle Stripe redirects
+initApp();
+
+// Keyboard: Enter submits auth form
+document.getElementById('auth-password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleAuthSubmit();
+});
+document.getElementById('auth-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('auth-password').focus();
+});
+
+// ESC closes modals
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeAuthModal();
+    closePaywall();
+    closeDrawer();
+    closeRecipeDetail();
+  }
+});
 
 /* ============================================================
    INTERACTIVE TOOLTIPS TUTORIAL
@@ -2157,5 +3046,95 @@ setTimeout(() => {
       </div>
     </div>
   </div>
+
+  <!-- ══ AUTH MODAL ══ -->
+  <div class="auth-overlay auth-hidden" id="auth-overlay">
+    <div class="auth-box">
+      <div class="auth-header">
+        <div class="auth-logo">Calorie<span>AI</span></div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="auth-tab-login"  onclick="switchAuthTab('login')">Sign In</button>
+          <button class="auth-tab"        id="auth-tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+        </div>
+      </div>
+      <div class="auth-body">
+        <!-- Login form -->
+        <div id="auth-login-form">
+          <div class="auth-field">
+            <label class="auth-label" id="auth-email-lbl">Email</label>
+            <input class="auth-input" type="email" id="auth-email" placeholder="you@example.com" />
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" id="auth-pass-lbl">Password</label>
+            <input class="auth-input" type="password" id="auth-password" placeholder="••••••••" />
+          </div>
+          <button class="auth-submit" id="auth-submit-btn" onclick="handleAuthSubmit()">
+            <span id="auth-submit-label">Sign In</span>
+          </button>
+          <div class="auth-error hidden" id="auth-error"></div>
+          <div class="auth-divider"><span id="auth-or-label">or</span></div>
+          <button class="auth-guest" onclick="closeAuthModal()">
+            <span id="auth-guest-label">Continue with TDEE only (free)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PROFILE DRAWER ══ -->
+  <div class="drawer-overlay drawer-hidden" id="drawer-overlay" onclick="closeDrawer()"></div>
+  <div class="profile-drawer" id="profile-drawer">
+    <div class="drawer-top">
+      <div></div>
+      <button class="drawer-close" onclick="closeDrawer()">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <div class="drawer-avatar" id="drawer-avatar">?</div>
+      <div class="drawer-name"  id="drawer-name">User</div>
+      <div class="drawer-email" id="drawer-email">user@email.com</div>
+      <div class="plan-badge free" id="drawer-plan-badge">Free</div>
+      <div class="drawer-divider"></div>
+      <div class="drawer-usage" id="drawer-usage"></div>
+      <button class="drawer-upgrade hidden" id="drawer-upgrade-btn" onclick="showPaywall('food')">
+        ⚡ Upgrade to Pro
+      </button>
+      <button class="drawer-logout" onclick="handleLogout()" id="drawer-logout-btn">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- ══ PAYWALL MODAL ══ -->
+  <div class="paywall-overlay paywall-hidden" id="paywall-overlay">
+    <div class="paywall-box">
+      <div class="paywall-header">
+        <div class="paywall-icon">⚡</div>
+        <div class="paywall-title" id="pw-title">Unlock Pro</div>
+        <p class="paywall-sub" id="pw-sub">Get unlimited food analyses, save your recipes, and a personalized AI profile.</p>
+      </div>
+      <div class="paywall-body">
+        <ul class="paywall-features" id="pw-features">
+          <li id="pw-f1">Unlimited AI food analyses</li>
+          <li id="pw-f2">Save unlimited recipes</li>
+          <li id="pw-f3">AI personalized to your calorie profile</li>
+          <li id="pw-f4">Priority AI responses</li>
+        </ul>
+        <div class="plan-toggle">
+          <button class="plan-opt active" id="pw-monthly-btn" onclick="setPlanType('monthly')">Monthly</button>
+          <button class="plan-opt"        id="pw-annual-btn"  onclick="setPlanType('annual')">Annual</button>
+        </div>
+        <div class="price-display">
+          <div class="price-amount" id="pw-price">R$14,90</div>
+          <div class="price-period" id="pw-period">per month</div>
+          <div class="price-savings hidden" id="pw-savings">Save 25%</div>
+        </div>
+        <button class="paywall-cta" id="pw-cta-btn" onclick="handleSubscribe()">
+          <span id="pw-cta-label">Subscribe Now →</span>
+        </button>
+        <button class="paywall-dismiss" onclick="closePaywall()" id="pw-dismiss-btn">Maybe later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOAST ══ -->
+  <div class="toast" id="toast"></div>
 </body>
 </html>
