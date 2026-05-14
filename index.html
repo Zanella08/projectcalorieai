@@ -1375,10 +1375,9 @@
    ⚙️  CONFIGURATION
 ============================================================ */
 const CONFIG = {
-  // AI
   provider: 'groq',
-  apiKey:   '', // leave empty when using proxyUrl
-  proxyUrl: 'https://projectcalorieai.ramospietro08.workers.dev', // e.g. https://calorieai.yourname.workers.dev
+  apiKey:   '', // managed by Cloudflare Worker — do not add key here
+  proxyUrl: 'https://projectcalorieai.ramospietro08.workers.dev',
 };
 
 const SUPABASE_URL  = 'https://frcyjkvlbsjumprqqpgz.supabase.co';
@@ -1489,7 +1488,7 @@ const T = {
     err_fill:'Please fill in all fields.', err_age:'Age must be between 10 and 100.',
     err_weight:'Please enter a valid weight.', err_height:'Please enter a valid height.',
     err_no_ing:'Add at least one ingredient.',
-    err_api:'API key not set. Open index.html, paste your Groq key in CONFIG.apiKey and set provider to groq.',
+    err_api:'AI service not configured. Check that your Cloudflare Worker URL is set in CONFIG.proxyUrl.',
     ing_ph_name:'e.g. Chicken breast', ing_ph_qty:'100',
     units:['g','ml','kg','oz','lb','cup','tbsp','tsp','unit','piece','slice','handful','pinch'],
   },
@@ -1589,7 +1588,7 @@ const T = {
     err_fill:'Por favor, preencha todos os campos.', err_age:'A idade deve ser entre 10 e 100.',
     err_weight:'Insira um peso válido.', err_height:'Insira uma altura válida.',
     err_no_ing:'Adicione pelo menos um ingrediente.',
-    err_api:'Chave de API não configurada. Abra index.html, cole sua chave Groq em CONFIG.apiKey e defina provider como groq.',
+    err_api:'Serviço de IA não configurado. Verifique se a URL do Cloudflare Worker está definida em CONFIG.proxyUrl.',
     ing_ph_name:'ex: Peito de frango', ing_ph_qty:'100',
     units:['g','ml','kg','oz','lb','xíc.','col. sopa','col. chá','unidade','peça','fatia','punhado','pitada'],
   }
@@ -2062,7 +2061,7 @@ All number fields must be integers (rounded). Use standard nutritional databases
 ============================================================ */
 async function runFoodAINotes() {
   if (!lastFoodData) return;
-  if (!CONFIG.apiKey || CONFIG.apiKey.includes('YOUR_')) return;
+  if (!CONFIG.proxyUrl || CONFIG.proxyUrl.includes('YOUR_')) return;
 
   const { recipeName, ings } = lastFoodData;
   const stageKeys = ['food_stage1','food_stage2','food_stage3'];
