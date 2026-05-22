@@ -1640,7 +1640,7 @@ function setLang(l) {
   if (signinBtn2 && signinBtn2.style.display !== 'none') {
     signinBtn2.textContent = lang === 'pt' ? 'Entrar' : 'Sign In';
   }
-  updateAuthModalLang();
+  if (document.getElementById('auth-tab-login')) updateAuthModalLang();
 
   // If language actually changed and AI results are already visible, re-run AI in new language
   if (prevLang !== l) {
@@ -2360,19 +2360,22 @@ function switchAuthTab(tab) {
 
 function updateAuthModalLang() {
   const ispt = lang === 'pt';
-  document.getElementById('auth-tab-login').textContent  = ispt ? 'Entrar' : 'Sign In';
-  document.getElementById('auth-tab-signup').textContent = ispt ? 'Criar Conta' : 'Create Account';
-  document.getElementById('auth-email-lbl').textContent  = 'Email';
-  document.getElementById('auth-pass-lbl').textContent   = ispt ? 'Senha' : 'Password';
-  document.getElementById('auth-submit-label').textContent = authTab === 'login'
-    ? (ispt ? 'Entrar' : 'Sign In')
-    : (ispt ? 'Criar Conta' : 'Create Account');
-  document.getElementById('auth-or-label').textContent    = ispt ? 'ou' : 'or';
-  document.getElementById('auth-guest-label').textContent = ispt
+  // Safe setter — skips if element doesn't exist yet in DOM
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  const ph  = (id, val) => { const el = document.getElementById(id); if (el) el.placeholder  = val; };
+  set('auth-tab-login',    ispt ? 'Entrar'      : 'Sign In');
+  set('auth-tab-signup',   ispt ? 'Criar Conta' : 'Create Account');
+  set('auth-email-lbl',    'Email');
+  set('auth-pass-lbl',     ispt ? 'Senha'       : 'Password');
+  set('auth-submit-label', authTab === 'login'
+    ? (ispt ? 'Entrar'      : 'Sign In')
+    : (ispt ? 'Criar Conta' : 'Create Account'));
+  set('auth-or-label',     ispt ? 'ou' : 'or');
+  set('auth-guest-label',  ispt
     ? 'Continuar só com a calculadora (grátis)'
-    : 'Continue with TDEE only (free)';
-  document.getElementById('auth-email').placeholder = 'email@exemplo.com';
-  document.getElementById('auth-password').placeholder = ispt ? '••••••••' : '••••••••';
+    : 'Continue with TDEE only (free)');
+  ph('auth-email',    'email@exemplo.com');
+  ph('auth-password', '••••••••');
 }
 
 async function handleAuthSubmit() {
@@ -2438,6 +2441,7 @@ async function handleLogout() {
 function updateHeaderUI(user) {
   const avatar   = document.getElementById('nav-avatar');
   const signinBtn= document.getElementById('nav-signin-btn');
+  if (!avatar || !signinBtn) return;
 
   if (user) {
     const initials = getInitials(userProfile?.full_name || user.email);
@@ -2871,11 +2875,12 @@ setTimeout(() => {
 initApp();
 
 // Keyboard: Enter submits auth form
-document.getElementById('auth-password').addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleAuthSubmit();
-});
-document.getElementById('auth-email').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('auth-password').focus();
+// Keyboard via event delegation — safe even if modal not yet in DOM
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (document.activeElement?.id === 'auth-password') handleAuthSubmit();
+    if (document.activeElement?.id === 'auth-email') document.getElementById('auth-password')?.focus();
+  }
 });
 
 // ESC closes modals
